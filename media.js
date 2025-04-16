@@ -1,22 +1,35 @@
 function calcularMedia(listaNumeros) {
-    if (!Array.isArray(listaNumeros) || listaNumeros.length === 0) {
-        return "Erro: a lista está vazia.";
+    if (!Array.isArray(listaNumeros)) {
+        throw new Error("Erro: o parâmetro deve ser uma lista (array).");
     }
-
-    for (let item of listaNumeros) {
-        if (typeof item !== "number") {
-            return "Erro: todos os elementos da lista devem ser números.";
-        }
+    if (listaNumeros.length === 0) {
+        throw new Error("Erro: a lista está vazia.");
+    }
+    if (!listaNumeros.every(item => typeof item === "number")) {
+        throw new Error("Erro: todos os elementos da lista devem ser números.");
     }
 
     const soma = listaNumeros.reduce((acc, val) => acc + val, 0);
-    const media = soma / listaNumeros.length;
-    return media;
+    return soma / listaNumeros.length;
 }
 
 // Testes
-console.log(calcularMedia([10, 20, 30]));
-console.log(calcularMedia([10, '20', 30]));
-console.log(calcularMedia([]));
-console.log(calcularMedia([-5, 0, 5]));
-console.log(calcularMedia([1.5, 2.5, 3.5]));
+try {
+    console.log(calcularMedia([10, 20, 30])); // 20
+    console.log(calcularMedia([10, '20', 30])); // Erro
+} catch (e) {
+    console.error(e.message);
+}
+
+try {
+    console.log(calcularMedia([])); // Erro
+} catch (e) {
+    console.error(e.message);
+}
+
+try {
+    console.log(calcularMedia([-5, 0, 5])); // 0
+    console.log(calcularMedia([1.5, 2.5, 3.5])); // 2.5
+} catch (e) {
+    console.error(e.message);
+}
